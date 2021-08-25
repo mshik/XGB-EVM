@@ -15,6 +15,7 @@ app = Flask(__name__)
 run_with_ngrok(app)
 
 STATIC_FOLDER = 'static'
+MODELS_FOLDER = 'models'
 # Path to the folder where we'll store the upload before prediction
 UPLOAD_FOLDER = STATIC_FOLDER + '/uploads'
 total_len=0
@@ -93,18 +94,17 @@ def load_models(path, model_name='vgg'):
 
 def extract_features(x_input, model_name='gain'):
     if model_name=='pretrained':
-        path='/content/drive/MyDrive/Derbi Hackathon (Aug 2021)/Code/xgb/PreFinals/Codes/'
         #Load pretrained models
         # 1. MobileNetV2
-        mob_path = path+'MobilenetV2/Mobilenetv2_Output_files/Models/mobV2_2021-08-21_12-49-38_Model_run_1_DS-4.model'
+        mob_path = os.path.join(MODELS_FOLDER, 'mob.model')
         mob_model = load_models(mob_path,'mob')
         print("MobileNetV2 loaded")
         # 2. VGG16
-        vgg_path = path+'Vgg16/VGG16_Outputs_files/Models/VGG162021-08-15_19-08-35_Model_run_1_DS-4.model'
+        vgg_path = os.path.join(MODELS_FOLDER, 'vgg.model')
         vgg_model = load_models(vgg_path)
         print("Vgg16 loaded")
         # 3. EfficientNetB4
-        efn_path = path+'EfficientNet/Efficientnet_Output_files/Models/efnb42021-08-24_09-11-49_Model_run_1_DS-5.model'
+        efn_path = os.path.join(MODELS_FOLDER, 'efn.model')
         efn_model = load_models(efn_path,'efn')
         print("EfficientNetB4 loaded")
         #Now, let us use features from loaded models for classifier
@@ -118,7 +118,7 @@ def extract_features(x_input, model_name='gain'):
         X_cnn = np.mean([mob_features, VGG_features, efn_features], axis=0)
     else:
         #Load GAIN model
-        gain_path = ''
+        gain_path = os.path.join(MODELS_FOLDER, 'gain.model')
         gain_model = load_models(gain_path)
         #Now, let us use features from loaded models for classifier
         gain_feature_extractor=mob_model.predict(x_input)
@@ -145,7 +145,7 @@ def predict(model_name, data_path):
     else:
         x_input = extract_features(x_input)
     #Load classifier
-    xgb_path = '/content/drive/MyDrive/Derbi Hackathon (Aug 2021)/Outputs/XGBoost/XGB_model_mean_features_24aug.model'
+    xgb_path = os.path.join(MODELS_FOLDER, 'XGB_classifier.model')
     xgb_clf = xgb.XGBClassifier(objective='multi:softmax')
     xgb_clf.load_model(xgb_path)
     xgb_proba = xgb_clf.predict_proba(x_input)[:, 1]
