@@ -1,4 +1,14 @@
-# How to Run XGB-EVM webapp on collab
+# Steps to run the XGB-EVM webapp
+
+## 1. Downloading trained models
+Download the trained models from these links: 
+<a href='https://drive.google.com/file/d/17UKZyyQrsp3Tj8OAMxJ8DbeakHhMMajl/view?usp=sharing'>EfficientNetB4</a>,
+<a href='https://drive.google.com/file/d/18h08Rk01DFbadJfXdIrXqqMECIKfGxbt/view?usp=sharing'>MobileNetV2</a>,
+<a href='https://drive.google.com/file/d/1l9XYrtYPkJGcdb1ymlz8LWly_ArYcJgM/view?usp=sharing'>VGG16</a>.
+<br>
+Move the downloaded models into ```models``` folder.
+
+## 2. Run XGB-EVM webapp on colab
 
 ```
 1 Run Web_App_RSG.ipynb notebook in google colab.
